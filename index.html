@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Mobile phone data analysis in Python</title>
+        <meta name="author" content="Luc Rocher">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+        <!-- Code syntax highlighting -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+
+        <!--[if lt IE 9]>
+        <script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
+
+        <style>
+            .reveal .slides {
+                text-align: left;
+            }
+            .reveal .slides section * {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .reveal section img {
+                border: none;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <h2>Mobile phone data analysis</h2>
+                    <h4>@ NetMob 2015</h4>
+                    <p>
+                        <small>Luc Rocher / <a href="https://rocher.lc/">rocher.lc</a> / lrocher@mit.edu</small>
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Our schedule!</h2>
+                    <ul>
+                        <li>Navigate on the virtual machine</li>
+                        <li>Load the datasets with Python and Bandicoot</li>
+                        <li>Perform outstanding analyses</li>
+                    </ul>
+                </section>
+
+
+                <section>
+                    <h2>ACT I — Unix</h2>
+                    <p><b>Goal:</b> join the NetMob virtual machines</p>
+                    <ul>
+                        <li>GNU/Linux &amp; OS X: use the command line
+                        <li>Windows: <a href="www.putty.org">www.putty.org</a>
+                    </ul>
+                </section>
+
+
+                <section>
+                    <p>SSH Syntax</p>
+                    <pre><code>ssh {account}@{server}</code></pre>
+                    <p>Example</p>
+                    <pre><code>ssh datathon2@195.25.101.106
+datathon2@vc1-vm1:~$</code></pre>
+                </section>
+
+                <section>
+                    <p><span>And now?</span>
+                    <span class="fragment">The datasets are in <code>/data</code>.</span></p>
+                    <ul class="fragment">
+                        <li>How to navigate on the server?</li>
+                        <li>How to look at files, move, or delete them?</li>
+                        <li>Best practices to work remotely</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h4>How to navigate on the server?</h4>
+                    <pre><code class="bash">$ cd /data
+
+$ ls
+ContextData  SET1  SET2  SET3
+
+$ ls /data/ContextData
+bandicoot_v01.pdf  D4D_Senegal.pdf  senegal_arr_centroids.csv
+SENEGAL_ARR_V2.csv  Shapefile_Senegal_V2.zip  SITE_ARR_LONLAT.CSV</code></pre>
+
+                    <p>I'm lost!</p>
+                    <pre><code class="bash">$ pwd
+/data</code></pre>
+                </section>
+
+                <section>
+                    <pre><code class="bash">$ ls -lh /data/ContextData
+total 1.4M
+-rw-r--r-- 1 root root 150K Mar 23 10:55 bandicoot_v01.pdf
+-rw-r--r-- 1 root root 200K Mar 23 10:55 D4D_Senegal.pdf
+-rw-r--r-- 1 root root 9.9K Mar 23 10:55 senegal_arr_centroids.csv
+-rw-r--r-- 1 root root 3.6K Mar 23 10:55 SENEGAL_ARR_V2.csv
+-rw-r--r-- 1 root root 994K Mar 23 10:55 Shapefile_Senegal_V2.zip
+-rw-r--r-- 1 root root  46K Mar 23 10:55 SITE_ARR_LONLAT.CSV</code></pre>
+                </section>
+
+                <section>
+                    <p>Move</p>
+                    <pre><code class="bash">mv {old file} {new file}</code></pre>
+                    <p>Copy</p>
+                    <pre><code class="bash">cp {old file} {new file}</code></pre>
+                    <p>/!\ Delete </p>
+                    <pre><code class="bash">rm {file}
+rm -r {directory}
+rmdir {empty directory}</code></pre>
+                </section>
+
+                <section>
+                    <p>Quick look at <code>SITE_ARR_LONLAT.CSV</code></p>
+                    <pre><code data-trim class="bash">
+$ head SITE_ARR_LONLAT.CSV
+site_id,arr_id,lon,lat
+1,2,-17.525142,14.746832
+2,2,-17.524360,14.747434
+3,2,-17.522576,14.745198
+4,2,-17.516398,14.746730
+5,2,-17.512870,14.740658
+6,2,-17.512103,14.748411
+7,2,-17.510958,14.737403
+8,2,-17.508395,14.730968
+9,2,-17.507036,14.740671
+                    </code></pre>
+                    <p>Use <code>tail</code> for the end of the file</p>
+                </section>
+
+                <section>
+                    <p>How to know more? Great tutorial on:</p>
+                    <p><a href="http://www.ee.surrey.ac.uk/Teaching/Unix/">ee.surrey.ac.uk/Teaching/Unix/</a>
+                </section>
+
+                <section>
+                    <h4>Best practices</h4>
+                    <ul>
+                        <li>Monitor resources (disk, memory, CPU)</li>
+                        <li>Save the current session</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h4>Monitor resources</h4>
+                    <p><code>free -m</code> for used memory (MB)</p>
+                    <p><code>top</code> to see an interactive overview</p>
+                </section>
+
+                <section>
+                    <img src="img/htop-screen.png" alt="htop">
+                    <blockquote style="width: 100%;">“htop is an interactive text-mode process viewer for Linux. It aims to be a better 'top'.”</blockquote>
+                </section>
+
+                <section>
+                    <img src="img/byobu-screen.png" alt="byobu">
+                    <p>screen/tmux/byobu (here): terminal multiplexer</p>
+                </section>
+
+                <section>
+                    <p>Interactive IPython notebook remotely</p>
+                    <pre><code data-trim class="bash">
+# Server
+ipython2 notebook --no-browser --port=8889
+
+# Client
+ssh -N -f -L localhost:8889:localhost:8889 {user}@{d4d-server}
+                    </code></pre>
+
+                    <p class="fragment">Go to <a href="http://localhost:8889">http://localhost:8889</a> to use Python remotely</p>
+                    <img class="fragment" src="img/ipython-notebook.png" alt="IPython notebook">
+                </section>
+
+                <!-- ACT II -->
+
+                <section>
+                    <h2>ACT II — Python</h2>
+                    <ul>
+                        <li class="fragment">How to Python!</li>
+                        <li class="fragment">Load the datasets and visualize them (using pandas and matplotlib)</li>
+                    </ul>
+                    <p class="fragment">Great reference at <a href="diveintopython3.net">diveintopython3.net</a></p>
+                </section>
+
+                <section>
+                <section>
+                    <h4>Think of Python as pseudo-code</h4>
+                    <pre><code data-trim class="python">
+x, y, z = 1, 2, 3
+first, second = second, first
+a = b = 123
+                    </code></pre>
+
+                    <div class="fragment">
+                    <p>Indentation with four spaces</p>
+                    <pre><code data-trim class="python">
+if x < 5 or (x > 10 and x < 20):
+    print "The value is OK."
+
+for i in [1,2,3,4,5]:
+    print "This is iteration number", i
+
+# Print out the values from 0 to 99 inclusive.
+for value in range(100):
+    print value
+                    </code></pre>
+                    </div>
+
+                    </section>
+                    <section>
+                    <div>
+                    <h4>Working with lists</h4>
+                    <pre><code data-trim class="python">
+>>> kitchen = ["spam", "spam", "spam", "spam", "spam", "eggs", "tomato", "spam"]
+>>> print len(kitchen)
+8
+>>> print kitchen[0], kitchen[-1]
+spam spam
+>>> kitchen[1:3]
+['spam', 'spam']
+
+                    </code></pre>
+                    <p>List comprehension</p>
+                    <pre><code data-trim class="python">
+>>> [elem for elem in kitchen if elem != "spam"]
+['eggs', 'tomato']
+                    </code></pre>
+                    </div>
+                </section>
+
+                <section>
+                    <h4>Working with dictionaries</h4>
+                    <pre><code data-trim class="python">
+>>> call_duration = {"Alice": 23452532, "Boris": 252336,
+                     "Clarice": 2352525, "Doris": 23624643}
+
+>>> call_duration["Alice"]
+23452532
+
+>>> call_duration["Robin"] = 0
+
+>>> call_duration.keys()
+['Boris', 'Clarice', 'Alice', 'Doris', 'Robin']
+
+>>> max(call_duration.values())
+23624643
+                    </code></pre>
+                </section>
+
+
+                <section>
+                    <h4>Functions</h4>
+                    <pre><code data-trim class="python">
+def square(x):
+    return x*x
+
+print square(6)  # Prints out 36
+                    </code></pre>
+
+                    <pre class="fragment"><code data-trim class="python">
+def change(some_list):
+    some_list[1] = 4
+
+x = [1,2,3]
+change(x)
+print x  # Prints out [1,4,3]
+                    </code></pre>
+                </section>
+                </section>
+
+                <section>
+
+                <section>
+                    <h3>Going deeper!</h3>
+                    <ol>
+                        <li><b>NumPy</b>: fast computation on arrays and matrices</li>
+                        <li><b>SciPy</b>: scientific computation (optimization, linear algebra, integration, signal processing…)</li>
+                        <li><b>pandas</b>: data manipulation and analysis</li>
+                        <li><b>networkx</b>: manipulation and study of graphs</li>
+                        <li><b>matplotlib</b>: 2D and 3D plotting</li>
+                    <ol>
+                </section>
+
+                <section>
+                    <h3>First example: SET1S_01.CSV.gz</h3>
+                    <pre><code data-trim class="csv">
+# timestamp, outgoing id, incoming id, number of texts
+2013-01-01 00,1,61,1
+2013-01-01 00,1,340,1
+2013-01-01 00,1,419,1
+2013-01-01 00,1,420,1
+2013-01-01 00,1,447,2
+                    </code></pre>
+                    <div class="fragment">
+                        <p>What we would like to do:</p>
+                        <ul>
+                            <li>Distributions of <i>number_of_texts</i> per hour</li>
+                            <li>Network on a specific date</li>
+                            <li>Most central cell tower</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <p>{notebook for SET1 example}</p>
+                </section>
+                <section>
+                    <h4>pandas: quick review</h4>
+                    <p>Series and Dataframe at the foundation</p>
+                    <pre><code data-trim class="python">
+s = pandas.Series([1, 3, 5, np.nan, 6, 8])
+df = pandas.DataFrame({'A': serie_1, 'B': serie_2})
+                    </code></pre>
+                    <p>Easy to manipulate tables: fill, missing data, select columns or row, filter, transpose, group…</p>
+                </section>
+                </section>
+
+                <!-- ACT III -->
+
+                <section>
+                    <h2>ACT III — Behavioral indicators</h2>
+                    <p class="fragment">See more at <a href="bandicoot.mit.edu">bandicoot.mit.edu</a></p>
+                </section>
+
+                <section>
+                    <section>
+                        <p>{notebook for bandicoot}</p>
+                    </section>
+                </section>
+            </div>
+        </div>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+
+        <script>
+            // Full list of configuration options available at:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+
+                transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+                // Optional reveal.js plugins
+                dependencies: [
+                    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'plugin/zoom-js/zoom.js', async: true },
+                    { src: 'plugin/notes/notes.js', async: true }
+                ]
+            });
+
+        </script>
+
+    </body>
+</html>
