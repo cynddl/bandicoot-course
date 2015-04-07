@@ -39,6 +39,16 @@
             .reveal section img {
                 border: none;
             }
+
+            .reveal pre.inline {
+                display: inline-block;
+                width: auto;
+                box-shadow: none
+            }
+
+            .reveal pre.inline  code {
+                display: inline-block;
+            }
         </style>
     </head>
 
@@ -75,6 +85,10 @@
                     </ul>
                 </section>
 
+                <section>
+                    <img src="img/putty-screen.png" alt="PuTTY main screen">
+                    <p>PuTTY on Windows</p>
+                </section>
 
                 <section>
                     <p>SSH Syntax</p>
@@ -89,7 +103,7 @@ datathon2@vc1-vm1:~$</code></pre>
                     <span class="fragment">The datasets are in <code>/data</code>.</span></p>
                     <ul class="fragment">
                         <li>How to navigate on the server?</li>
-                        <li>How to look at files, move, or delete them?</li>
+                        <li>How to look at files, move, or copy them?</li>
                         <li>Best practices to work remotely</li>
                     </ul>
                 </section>
@@ -151,6 +165,25 @@ site_id,arr_id,lon,lat
                 </section>
 
                 <section>
+                    <h4>Less is more</h4>
+                    <pre><code data-trim class="bash">
+less SITE_ARR_LONLAT.CSV
+                    </code></pre>
+                    <p>Less is a terminal pager: moving forward and backward through (large) files.</p>
+                    <p>Use the arrow keys to go up and down; [PageUp], [PageDown], or [space] to go faster.</p>
+                </section>
+
+                <section>
+                    <h4>SET1, SET2, and SET3 files</h4>
+                    <p>Large compressed files!</p>
+
+                    <pre><code data-trim class="bash">
+gunzip file.gz
+                    </code></pre>
+                    <p><b>Warning</b>: large files. :) It's better to keep the files compressed and load them in memory.</p>
+                </section>
+
+                <section>
                     <p>How to know more? Great tutorial on:</p>
                     <p><a href="http://www.ee.surrey.ac.uk/Teaching/Unix/">ee.surrey.ac.uk/Teaching/Unix/</a>
                 </section>
@@ -165,8 +198,7 @@ site_id,arr_id,lon,lat
 
                 <section>
                     <h4>Monitor resources</h4>
-                    <p><code>free -m</code> for used memory (MB)</p>
-                    <p><code>top</code> to see an interactive overview</p>
+                    <p><code>htop</code> to see an interactive overview of used resources</p>
                 </section>
 
                 <section>
@@ -175,22 +207,27 @@ site_id,arr_id,lon,lat
                 </section>
 
                 <section>
-                    <img src="img/byobu-screen.png" alt="byobu">
-                    <p>screen/tmux/byobu (here): terminal multiplexer</p>
+                    <img src="img/tmux.png" alt="tmux">
+                    <p>tmux: terminal multiplexer</p>
                 </section>
 
                 <section>
-                    <p>Interactive IPython notebook remotely</p>
-                    <pre><code data-trim class="bash">
-# Server
-ipython2 notebook --no-browser --port=8889
+                    <img src="img/byobu-screen.png" alt="byobu">
+                    <p>byobu: terminal multiplexer</p>
+                </section>
 
-# Client
-ssh -N -f -L localhost:8889:localhost:8889 {user}@{d4d-server}
-                    </code></pre>
+                <section>
+                    <h5>Launch a session</h5>
+                    <p><pre class="inline"><code>tmux ls</code></pre> to list previous sessions</p>
+                    <p><pre class="inline"><code>tmux a</code></pre> to attach a previous session</p>
+                    <h5>From the session</h5>
+                    <p><pre class="inline"><code>Ctrl + b c</code></pre> to create a new ‘tab’</p>
+                    <p><pre class="inline"><code>Ctrl + b 5</code></pre> to go to window 5 (<i>etc.</i>)</p>
+                    <p><pre class="inline"><code>Ctrl + b d</code></pre> to detach</p>
+                </section>
 
-                    <p class="fragment">Go to <a href="http://localhost:8889">http://localhost:8889</a> to use Python remotely</p>
-                    <img class="fragment" src="img/ipython-notebook.png" alt="IPython notebook">
+                <section>
+                    <p>Questions for this first part?</p>
                 </section>
 
                 <!-- ACT II -->
@@ -205,18 +242,65 @@ ssh -N -f -L localhost:8889:localhost:8889 {user}@{d4d-server}
                 </section>
 
                 <section>
+
                 <section>
-                    <h4>Think of Python as pseudo-code</h4>
+                    <p>Python interpreter</p>
+                    <pre><code data-trim class="bash">
+$ python
+Python 2.7.9 (default, Jan  7 2015, 11:49:12)
+[GCC 4.2.1 Compatible Apple LLVM 6.0 (clang-600.0.56)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+                    </code></pre>
+                    <p>IPython interpreter</p>
+                    <pre><code data-trim class="bash">
+$ ipython
+Python 3.4.2 (default, Jan  7 2015, 11:54:58)
+Type "copyright", "credits" or "license" for more information.
+
+IPython 3.0.0 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+
+In [1]:
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h4>Why is IPython better?</h4>
+
+                    <ul>
+                        <li>Autocompletion with Tab: commands, files…</li>
+                        <li>Help for unknown commands:</li>
+                    </ul>
+
+                    <pre><code data-trim class="bash">
+In [1]: len?
+Type:        builtin_function_or_method
+String form: &lt;built-in function len&gt;
+Namespace:   Python builtin
+Docstring:
+len(object)
+
+Return the number of items of a sequence or collection.
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h4>Python is easy!</h4>
                     <pre><code data-trim class="python">
-x, y, z = 1, 2, 3
-first, second = second, first
-a = b = 123
+x = "Ha-ha!"
+x = 3
+y = x + 5
+print y # Prints out 8
                     </code></pre>
 
                     <div class="fragment">
                     <p>Indentation with four spaces</p>
                     <pre><code data-trim class="python">
-if x < 5 or (x > 10 and x < 20):
+if x &lt; 5 or (x &gt; 10 and x &lt; 20):
     print "The value is OK."
 
 for i in [1,2,3,4,5]:
@@ -227,48 +311,69 @@ for value in range(100):
     print value
                     </code></pre>
                     </div>
-
                     </section>
+
                     <section>
-                    <div>
+                        <h4>Conditional expressions</h4>
+                        <pre><code data-trim class="python">
+if x &lt; 5:
+    print "x is very small"
+elif x == 6:
+    print "Yes, x is 6!"
+else:
+    print "x is too large, I can't handle it"
+                        </code></pre>
+                    </section>
+
+                    <section>
                     <h4>Working with lists</h4>
                     <pre><code data-trim class="python">
->>> kitchen = ["spam", "spam", "spam", "spam", "spam", "eggs", "tomato", "spam"]
+>>> kitchen = ["spam", "spam", "spam", "eggs", "tomato", "spam"]
 >>> print len(kitchen)
-8
+6
 >>> print kitchen[0], kitchen[-1]
 spam spam
 >>> kitchen[1:3]
 ['spam', 'spam']
-
                     </code></pre>
-                    <p>List comprehension</p>
+                </section>
+                <section>
+                    <h4>For loops</h4>
                     <pre><code data-trim class="python">
->>> [elem for elem in kitchen if elem != "spam"]
-['eggs', 'tomato']
+for item in kitchen:
+    if item != "spam":
+        print item
+# Prints out:
+# eggs
+# tomato
                     </code></pre>
-                    </div>
+                    <pre><code data-trim class="python">
+for x in range(5):
+    print x*x
+# Prints out: 0, 1, 4, 9, 16
+                    </code></pre>
                 </section>
 
                 <section>
                     <h4>Working with dictionaries</h4>
                     <pre><code data-trim class="python">
->>> call_duration = {"Alice": 23452532, "Boris": 252336,
-                     "Clarice": 2352525, "Doris": 23624643}
+>>> call_duration = {"Alice": 45, "Boris": 100,
+                     "Clarice": 10, "Doris": 20}
 
 >>> call_duration["Alice"]
-23452532
+45
 
->>> call_duration["Robin"] = 0
+>>> call_duration["Robin"] = 5
+>>> call_duration["Robin"]
+5
 
 >>> call_duration.keys()
 ['Boris', 'Clarice', 'Alice', 'Doris', 'Robin']
 
 >>> max(call_duration.values())
-23624643
+100
                     </code></pre>
                 </section>
-
 
                 <section>
                     <h4>Functions</h4>
@@ -278,20 +383,10 @@ def square(x):
 
 print square(6)  # Prints out 36
                     </code></pre>
-
-                    <pre class="fragment"><code data-trim class="python">
-def change(some_list):
-    some_list[1] = 4
-
-x = [1,2,3]
-change(x)
-print x  # Prints out [1,4,3]
-                    </code></pre>
                 </section>
                 </section>
 
                 <section>
-
                 <section>
                     <h3>Going deeper!</h3>
                     <ol>
@@ -304,7 +399,12 @@ print x  # Prints out [1,4,3]
                 </section>
 
                 <section>
-                    <h3>First example: SET1S_01.CSV.gz</h3>
+                    <h3>First example: plotting in Python</h3>
+                    <p>{matplotlib notebook}</p>   
+                </section>
+
+                <section>
+                    <h3>Second example: SET1S_01.CSV.gz</h3>
                     <pre><code data-trim class="csv">
 # timestamp, outgoing id, incoming id, number of texts
 2013-01-01 00,1,61,1
@@ -325,15 +425,6 @@ print x  # Prints out [1,4,3]
 
                 <section>
                     <p>{notebook for SET1 example}</p>
-                </section>
-                <section>
-                    <h4>pandas: quick review</h4>
-                    <p>Series and Dataframe at the foundation</p>
-                    <pre><code data-trim class="python">
-s = pandas.Series([1, 3, 5, np.nan, 6, 8])
-df = pandas.DataFrame({'A': serie_1, 'B': serie_2})
-                    </code></pre>
-                    <p>Easy to manipulate tables: fill, missing data, select columns or row, filter, transpose, group…</p>
                 </section>
                 </section>
 
